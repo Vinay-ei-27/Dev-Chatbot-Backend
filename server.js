@@ -18,6 +18,7 @@ const port = process.env.PORT || 3001;
 app.use(cors({
   origin: [
     process.env.CORS_ORIGIN,
+    'https://dev-chatbot-backend.onrender.com',
     'http://localhost:5173'
   ],
   credentials: true
