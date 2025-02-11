@@ -15,13 +15,22 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 // Middlewares
+const allowedOrigins = [
+  'https://dev-chatbot-frontend.vercel.app',  // Production frontend
+  'http://localhost:5173',                    // Development frontend
+];
 app.use(cors({
-  origin: [
-    process.env.CORS_ORIGIN,
-    'https://dev-chatbot-backend.onrender.com',
-    'http://localhost:5173'
-  ],
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 204
 }));
 app.use(express.json());
 
